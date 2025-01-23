@@ -21,8 +21,8 @@ This project is built with **Node.js** and **Express.js** and uses in-memory sto
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/zoofan/grant-management.git
+   cd grant-managemen
    ```
 
 2. **Install dependencies**:
