@@ -38,9 +38,15 @@ app.post("/nonprofits", (req, res) => {
   });
 });
 
+const checkIfAllTagsExistForUser = (template, nonprofit) => {
+  const allTags = /{[^}]+}/g;
+  const tags = template.match(allTags);
+  return tags.every((tag) => nonprofit.hasOwnProperty(tag.slice(1, -1)));
+};
+
 // 2. Bulk Send Emails
 app.post("/emails/send", (req, res) => {
-  const {nonprofitEmails, subject, template} = req.body;
+  const {nonprofitEmails, cc, bcc, subject, template} = req.body;
 
   if (!Array.isArray(nonprofitEmails) || nonprofitEmails.length === 0) {
     return res
@@ -54,6 +60,14 @@ app.post("/emails/send", (req, res) => {
       return {email, success: false, message: "Nonprofit not found."};
     }
 
+    if (!checkIfAllTagsExistForUser(template, nonprofit)) {
+      return {
+        email,
+        success: false,
+        message: "Nonprofit does not have all required fields.",
+      };
+    }
+
     const body = template
       .replace("{name}", nonprofit.name)
       .replace("{address}", nonprofit.address);
@@ -63,6 +77,8 @@ app.post("/emails/send", (req, res) => {
     const sentEmail = {
       id: uuidv4(),
       to: email,
+      cc: cc || "",
+      bcc: bcc || "",
       subject,
       body,
       sentAt: new Date().toISOString(),
@@ -78,6 +94,12 @@ app.post("/emails/send", (req, res) => {
 // 3. Retrieve Sent Emails
 app.get("/emails", (req, res) => {
   res.status(200).json({sentEmails});
+});
+
+app.get("/myemails", (req, res) => {
+  /// get email from auth token, etc
+  const myEmails = sentEmails.filter((sentEmail) => sentEmail.to === email);
+  res.status(200).json({myEmails});
 });
 
 // Start server

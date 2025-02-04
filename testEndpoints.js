@@ -21,10 +21,12 @@ async function createNonprofit(name, address, email) {
 }
 
 // Helper function to send bulk emails
-async function sendBulkEmails(nonprofitEmails, subject, template) {
+async function sendBulkEmails(nonprofitEmails, cc, bcc, subject, template) {
   try {
     const response = await axios.post(`${BASE_URL}/emails/send`, {
       nonprofitEmails,
+      cc,
+      bcc,
       subject,
       template,
     });
@@ -62,8 +64,18 @@ async function getSentEmails() {
     // 2. Send bulk emails
     await sendBulkEmails(
       ["charityA@example.com", "charityB@example.com", "missing@example.com"],
+      "cc@test.com",
+      "bcc@test,com",
       "Hello from Our Service!",
-      "Hi {name} at {address}, we wanted to reach out..."
+      "Hi {name} at {geography}, we wanted to reach out..."
+    );
+
+    await sendBulkEmails(
+      ["charityA@example.com"],
+      "Anothercc@test.com",
+      "bcc@test,com",
+      "Hello again!",
+      "Hi {name} at {address},we wanted to reach out..."
     );
 
     // 3. Retrieve sent emails
