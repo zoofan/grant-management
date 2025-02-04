@@ -32,7 +32,7 @@ This project is built with **Node.js** and **Express.js** and uses in-memory sto
 
 3. **Start the server**:
    ```bash
-   node app.js
+   node index.js
    ```
    The server will start at `http://localhost:3000`.
 
