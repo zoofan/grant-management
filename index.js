@@ -32,12 +32,10 @@ app.post("/nonprofits", (req, res) => {
   }
 
   nonprofits[email] = {id: uuidv4(), name, address, email};
-  res
-    .status(201)
-    .json({
-      message: "Nonprofit created successfully.",
-      nonprofit: nonprofits[email],
-    });
+  res.status(201).json({
+    message: "Nonprofit created successfully.",
+    nonprofit: nonprofits[email],
+  });
 });
 
 // 2. Bulk Send Emails
