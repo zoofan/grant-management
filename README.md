@@ -36,6 +36,11 @@ This project is built with **Node.js** and **Express.js** and uses in-memory sto
    ```
    The server will start at `http://localhost:3000`.
 
+4. **Run test script (in another terminal)**:
+   ```bash
+   node testEndpoints.js
+   ```
+
 ---
 
 ## API Endpoints
